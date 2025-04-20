@@ -2,7 +2,7 @@
 1. pip install virtualenv
 2. python -m virtualenv venv
 3. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-or Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    3.1 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 4. .\venv\scripts\activate
 5. pip install Django
 6. django-admin startproject firstweb
@@ -11,5 +11,12 @@ or Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 8. python manage.py runserver
     8.1 http://127.0.0.1:8000/
     8.2 http://localhost:8000/
-9. python manage.py startapp myapp
-10. 
+    8.3 Ctrl + C เพื่อปิด server
+# 9. ถ้ากลับมาทำวันหลัง venv หายไป ทำยังไง
+    9.1 cd folder ที่มี venv
+    9.2 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+    9.3 .\venv\scripts\activate
+    9.4 cd firstweb
+    9.5 python manage.py runserver
+10. python manage.py startapp myapp
+ 
