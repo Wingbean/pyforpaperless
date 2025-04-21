@@ -62,6 +62,10 @@
         tel = models.CharField(max_length=255)
         position = models.CharField(max_length=255)
 
+        # ทำให้หลังจาก เพิ่มข้อมูลใน form มันจะแสดงเป็นชื่อ fullname ถ้าไม่ def มันจะขึ้นเป็น Job object
+        def __str__(self):
+            return self.fullname
+
 17. edit myapp\admin.py
     
     from .models import Job
@@ -70,5 +74,37 @@
 18. สร้าง model เสร็จยังใช้ไม่ได้ ต้องรัน คำสั่ง 2 อัน
     python manage.py makemigrations
     python manage.py migrate
+    # การ migrate เหมือนการ เช็ค การเปลี่ยนแปลง ในเวบของเรา ว่าเราทำอะไรแก้ไขอะไร
+    # ทุกครั้งที่สร้าง db ใหม่ หรือ มีการเปลี่ยนแปลง อะไรใหม่ ต้องรัน 2 คำสั่งนี้ใหม่
 
-19.
+    """
+        (venv) PS D:\DEV\pyforpaperless\firstweb> python manage.py makemigrations
+    Migrations for 'myapp':
+    myapp\migrations\0001_initial.py
+        + Create model Job
+    (venv) PS D:\DEV\pyforpaperless\firstweb> python manage.py migrate
+    Operations to perform:
+    Apply all migrations: admin, auth, contenttypes, myapp, sessions
+    Running migrations:
+    Applying myapp.0001_initial... OK
+    """
+
+19. Create db อีกอัน Position
+    
+    class Position(models.Model):
+    title = models.CharField(max_length=255)
+    salary = models.IntegerField(default=10000) # ค่าเริ่มต้น 10000
+    manager = models.CharField(max_length=255) #ใครเป็นผู้จัดการ
+    description = models.TextField(null=True, blank=True) #ไม่บังคับกรอก
+    
+    def __str__(self):
+        return self.title
+
+20. สร้าง db ใหม่ ก็ต้องไป register model ใน admin.py อีกครั้ง
+    
+    from .models import Job, Position
+    admin.site.register(Position)
+
+21. สร้าง model เสร็จยังใช้ไม่ได้ ต้องรัน คำสั่ง 2 อัน
+    python manage.py makemigrations
+    python manage.py migrate
