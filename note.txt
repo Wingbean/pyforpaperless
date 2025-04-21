@@ -39,7 +39,7 @@
 13. การสร้าง app
     python manage.py startapp myapp
 
-14. แก้ settings.py เพิ่ม myapp
+14. แก้ firstweb\settings.py เพิ่ม myapp
     INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,3 +53,22 @@
 15. ALLOWED_HOSTS = ['*'] 
     เพิ่ม '*' เข้าไป
     # run web in network (mobile phone in same network)
+
+16. edit myapp\models.py
+    create db --> use class ใหญ่กว่า fn, fn ที่อยู่ใน class is called Method
+    
+    class Job(models.Model):
+        fullname = models.CharField(max_length=255)
+        tel = models.CharField(max_length=255)
+        position = models.CharField(max_length=255)
+
+17. edit myapp\admin.py
+    
+    from .models import Job
+    admin.site.register(Job) #register model
+
+18. สร้าง model เสร็จยังใช้ไม่ได้ ต้องรัน คำสั่ง 2 อัน
+    python manage.py makemigrations
+    python manage.py migrate
+
+19.

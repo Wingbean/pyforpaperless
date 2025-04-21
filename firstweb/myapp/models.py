@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+class Job(models.Model):
+    fullname = models.CharField(max_length=255)
+    tel = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
