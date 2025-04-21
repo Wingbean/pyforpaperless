@@ -39,5 +39,17 @@
 13. การสร้าง app
     python manage.py startapp myapp
 
+14. แก้ settings.py เพิ่ม myapp
+    INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'myapp',
+    ]
 
- 
+15. ALLOWED_HOSTS = ['*'] 
+    เพิ่ม '*' เข้าไป
+    # run web in network (mobile phone in same network)

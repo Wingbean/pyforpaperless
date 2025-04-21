@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8#72$#saie!^rxw#e12!lp4j58^_)s052*pfujsgs(l%84cti$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # run web in network (mobile phone in same network)
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'myapp',
 ]
 
 MIDDLEWARE = [
