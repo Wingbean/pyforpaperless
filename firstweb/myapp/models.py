@@ -18,3 +18,14 @@ class Position(models.Model):
     
     def __str__(self):
         return self.title
+
+class Leave(models.Model):
+    fname = models.CharField(max_length=255)
+    lname = models.CharField(max_length=255)
+    dept = models.CharField(max_length=255)
+    tel = models.CharField(max_length=255)
+    sdate = models.DateField()
+    ldate = models.DateField()
+
+    def __str__(self):
+        return self.fname + ' ' + self.lname
