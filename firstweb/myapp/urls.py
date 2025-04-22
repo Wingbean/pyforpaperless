@@ -3,5 +3,5 @@ from .views import Home # ใน folder เดียวกัน ช่วยห
 
 # ข้างล่างเป็นตัวกำหนดทางเดินของเวบ
 urlpatterns = [
-    path('', Home),
+    path('', Home), #path('') มันก็คือ localhost:8000
 ]

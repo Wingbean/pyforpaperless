@@ -152,7 +152,9 @@ EP06
     25.1 # add Home to urlpatterns
         """
         urlpatterns = [
-        path('', Home),
+        path('', Home), # path('') มันก็คือ localhost:8000
         ]
 
         """
+26. แต่ความจริงเราไม่ได้ใช้ HttpResponse เราจะใช้การโชว์ ไฟล์ home.html
+    

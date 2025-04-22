@@ -4,4 +4,4 @@ from django.http import HttpResponse # add line
 # start create fn for myapp\urls.py
 
 def Home(request):
-    return HttpResponse('<h1>Hello World</h1>')
+    return HttpResponse('<h1>Hello World from DataSloth</h1>')
