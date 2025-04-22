@@ -164,3 +164,4 @@ EP06
     "myapp\templates\myapp\home.html"
 
 28. หา copy template from bootstrap
+    copy sourcecode มาเลย แล้วแก้อ้างอิง href ให้ถูกต้อง
