@@ -158,3 +158,9 @@ EP06
         """
 26. แต่ความจริงเราไม่ได้ใช้ HttpResponse เราจะใช้การโชว์ ไฟล์ home.html
     
+27. เริ่มสร้าง html จากการ สร้าง folder templates ที่ myapp
+    แล้วสร้าง folder myapp ใน templates อีกที
+    แล้วสร้าง home.html ใน templates\myapp
+    "myapp\templates\myapp\home.html"
+
+28. หา copy template from bootstrap
