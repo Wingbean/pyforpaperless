@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include #add include เพื่อ forward
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('myapp.urls')), #add path line นี้ เพื่อ forward ให้เวบไปที่ urls.py ใน myapp (#homepage) จะให้แสดงอะไร ก็ไปแก้ใน views.py
 ]

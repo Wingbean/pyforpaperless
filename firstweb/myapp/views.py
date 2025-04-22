@@ -1,3 +1,7 @@
 from django.shortcuts import render
+from django.http import HttpResponse # add line
 
-# Create your views here.
+# start create fn for myapp\urls.py
+
+def Home(request):
+    return HttpResponse('<h1>Hello World</h1>')

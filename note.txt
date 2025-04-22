@@ -108,3 +108,51 @@
 21. สร้าง model เสร็จยังใช้ไม่ได้ ต้องรัน คำสั่ง 2 อัน
     python manage.py makemigrations
     python manage.py migrate
+
+--------------------------------------------
+EP06
+
+22. Create urls.py in \firstweb\myapp *ไม่ใช่ที่ firstweb*
+    copy code from urls.py in \firstweb
+    
+    """
+        from django.urls import path
+
+        urlpatterns = [
+            path('', ),
+        ]
+    """
+
+23. edit urls.py in \firstweb
+    """
+        from django.contrib import admin
+        from django.urls import path, include #เพิ่ม include #add include เพื่อ forward
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('', include('myapp.url')) #เพิ่ม path บรรทัดนี้ #add path line นี้ เพื่อ forward ให้เวบไปที่ urls.py ใน myapp
+        ]
+
+24. edit \myapp\views.py 
+    add line
+    """
+    from django.http import HttpResponse
+
+    # start create fn for myapp\urls.py
+
+    def Home(request):
+        return HttpResponse('<h1>Hello World</h1>')
+    
+    """
+
+25. import fn Home() to \myapp\urls.py
+    """
+    from .views import Home # ใน folder เดียวกัน ช่วยหา views.py ให้หน่อย แล้ว import Fn Home() เข้ามา
+    """
+    25.1 # add Home to urlpatterns
+        """
+        urlpatterns = [
+        path('', Home),
+        ]
+
+        """
