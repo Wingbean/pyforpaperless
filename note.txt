@@ -204,3 +204,43 @@ EP06
             <form method = "POST">
                 {% csrf_token %} #รหัสความปลอดภัยของการ submit ใน django
             """
+    32.4    id กับ Name ต่างกันยังไง
+            id ใช้ ref ใน html 
+            name ใช้ ตอน submit POST เข้าไป Backend
+
+33. edit views.py
+    """
+    def Home(request):
+    if request.method == 'POST' :
+        data = request.POST.copy() # data เป็น Dict ที่มาจากการ submit form
+        print('DATA: ', data)
+        fullname = data.get('fullname')
+        tel = data.get('tel')
+        position = data.get('position')
+        print('Fullname: ', fullname)
+        print('Tel: ', tel)
+        print('position: ', position)
+    #return HttpResponse('<h1>Hello World from DataSloth</h1>')
+    return render(request, 'myapp/home.html')
+
+    """
+
+    ลองกด submit
+    """
+        DATA:  <QueryDict: {'csrfmiddlewaretoken': ['5wwXJQox93X2JtRLoiGzphAYEDDF3kQo8TX2gT3YOtMixSl42dfhnqRVbrrKs0uB'], 'fullname': ['wasu muan'], 'tel': ['0712345678'], 'position': ['gardener']}>
+    Fullname:  wasu muan
+    Tel:  0712345678
+    position:  gardener
+    """
+    เมื่อกด submit จะส่งมาที่ views.py จากข้อ 32.3
+
+34. ต้องดึง model มา เพื่อ บันทึกสิ่งที่ submit เข้าไป
+    views.py add line ต่อใน if request.method
+    """
+    # ดึง model Job มา save ของที่ submit เข้ามา
+        newjob = Job()
+        newjob.fullname = fullname
+        newjob.tel = tel
+        newjob.position = position
+        newjob.save() #ใช้ method save() ที่ inherit มาจาก "from django.db import models"
+    """
