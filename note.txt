@@ -165,3 +165,31 @@ EP06
 
 28. หา copy template from bootstrap
     copy sourcecode มาเลย แล้วแก้อ้างอิง href ให้ถูกต้อง
+
+29. open firstweb\settings.py
+    เพื่อบอกว่า folder ที่เก็บ file home.html อยู่ที่ไหน
+    BASE_DIR มันคือ dir เริ่มต้นของเวบ ในที่นี่คือ C:\Users\MKDay\OneDrive\MKDay\Project Python\pyforpaperless\firstweb
+    เข้าไปแก้ บรรทัด templates
+    
+    """
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [ BASE_DIR / 'myapp/templates'], # <--- แก้ตรงนี้
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        },
+    ]
+    """
+
+30. กลับไปแก้ firstweb\myapp\views.py
+    
+    def Home(request):
+        #return HttpResponse('<h1>Hello World from DataSloth</h1>')
+        return render(request, 'myapp/home.html') # เป็นการชี้ตำแหน่งไฟล์ html ต่อจาก \templates\ ด้านบน
