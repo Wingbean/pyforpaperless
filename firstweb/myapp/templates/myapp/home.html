@@ -35,7 +35,28 @@
 </head>
 <body>
     <h1 class="main-title">Welcome to DataSlothy</h1>
+    <div class="container mt-3">
+        <h2>ฟอร์มสมัครงาน</h2>
+        <form method = "POST">
+            {% csrf_token %}
 
+          <div class="mb-3 mt-3">
+            <label for="fullname">Fullname</label>
+            <input type="text" class="form-control" id="fullname" placeholder="ชื่อ-นามสกุล" name="fullname">
+          </div>          
+          <div class="mb-3 mt-3">
+            <label for="tel">Tel</label>
+            <input type="text" class="form-control" id="tel" placeholder="เบอร์โทรศัพท์" name="tel">
+          </div>
+          <div class="mb-3 mt-3">
+            <label for="position">Position</label>
+            <input type="text" class="form-control" id="position" placeholder="ตำแหน่ง" name="position">
+          </div>
+                    
+          <button type="submit" class="btn btn-primary">บันทึก</button>
+        </form>
+      </div>
+    
     <footer class="powered-by">
         Power by DataSloth Team
     </footer>

@@ -193,3 +193,14 @@ EP06
     def Home(request):
         #return HttpResponse('<h1>Hello World from DataSloth</h1>')
         return render(request, 'myapp/home.html') # เป็นการชี้ตำแหน่งไฟล์ html ต่อจาก \templates\ ด้านบน
+
+31. add form to home.html from w3schools
+
+32. edit html ส่วนสำคัญ คือ
+    32.1    การเปลี่ยน label for=, id=, name= #โดย name ต้องไม่ซ้ำกัน
+    32.2    input type = เลือกให้ถูกต้อง
+    32.3    <form action="/action_page.php"> ต้องเปลี่ยนเป็น method ที่ django ใช้
+            """
+            <form method = "POST">
+                {% csrf_token %} #รหัสความปลอดภัยของการ submit ใน django
+            """
