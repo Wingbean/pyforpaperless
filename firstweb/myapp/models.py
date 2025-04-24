@@ -31,7 +31,7 @@ class Leave(models.Model):
     def __str__(self):
         return self.fname + ' ' + self.lname
 
-class Profiles(models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #เรียกใช้ user
     user_type = models.CharField(max_length=20, default= 'employee')
     bio = models.CharField(max_length=255)
