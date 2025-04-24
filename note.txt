@@ -244,3 +244,44 @@ EP06
         newjob.position = position
         newjob.save() #ใช้ method save() ที่ inherit มาจาก "from django.db import models"
     """
+35. create base.html in templates\myapp ที่เดียวกับ home.html
+
+36. copy ทุกอย่างจาก home to base.html
+
+37. edit home.html จะเหลือแค่ div เป็น form submit เดิม 
+    จากนั้น เอา form นี้ออกจาก base.html
+    ต่อด้วย สร้าง block content เข้าไปแทนที่ form เดิมที่เอาออกจาก base.html
+    """
+    {% block content %}
+
+    {% endblock content%}
+    """
+
+38. กลับมาที่ home.html เพิ่ม code บรรทัดแรก
+    {% extends 'myapps/base.html'%}
+    
+    แล้วเอา code ทั้งหมด ใส่เข้าไปใน
+    """
+    {% block content %}
+    <div>...</div>
+    {% endblock content%}
+    """
+
+39. จาก 35-38 มัรคือการลด code เพื่อให้จัดการง่ายขึ้น base.html เหมือน ไฟล์หลัก ที่มี template , cssมี nav bar มี script อะไรมากมาย 
+    แล้วเราค่อยเขียน แต่ละส่วน ประกอบร่างเข้าไปใน base.html จะบอกว่า ประกอบร่างก็ไม่น่าถูก น่าจะหมายถึง base เป็น template หลัก
+    
+    แล้วเราอยากเขียนส่วนไหนของเวบ ก็ไปเรียก template หลักจาก base.html มา แล้วเขียน content ส่วนนั้น 
+    โดยการดึง ก็ใช้ code {% extends 'myapp/base.html'%} 
+    
+    ในที่นี้ home.html ไปดึง base มาเป็น template ในการ เขียน block content การ submit ที่เราทำกันในข้อข้างบน
+    โดยให้ code submit อยู่ใน code นี้ 
+    """
+    {% block content %}
+        <div>...</div> #content ที่ต้องการเขียน
+    {% endblock content%}
+    """
+
+    หน้า home.html จะเป็นอย่างไร ก็ขึ้นอยู่กับ ตำแหน่งของ code {% block content %} .... {% endblock content%}
+    ว่าวางไว้ตรงไหน ของ base.html พอแบบนี้ เหมือน เราเอา code content ไปวาง ใน base ตรงตำแหน่งนั้นเลย
+
+40. 
