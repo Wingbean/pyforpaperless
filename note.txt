@@ -284,4 +284,19 @@ EP06
     หน้า home.html จะเป็นอย่างไร ก็ขึ้นอยู่กับ ตำแหน่งของ code {% block content %} .... {% endblock content%}
     ว่าวางไว้ตรงไหน ของ base.html พอแบบนี้ เหมือน เราเอา code content ไปวาง ใน base ตรงตำแหน่งนั้นเลย
 
-40. 
+40. model.py สร้าง class เพิ่ม
+    """
+    from django.contrib.auth.models import User # นำเข้า User เข้ามาใช้
+
+    class Profiles(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE) #เรียกใช้ user
+    user_type = models.CharField(max_length=20, default= 'employee')
+    bio = models.CharField(max_length=255)
+    facebook = models.CharField(max_length=100, default= 'No Facebook')
+    tel = models.CharField(max_length=20, null=True, blank=True)
+
+    def __str__(self):
+        return self.user
+    """
+
+41. makemigration แล้ว migrate ด้วย เพราะเราสร้างฐานข้อมูล model ใหม่
