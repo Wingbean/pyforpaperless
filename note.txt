@@ -303,8 +303,8 @@ EP06
 
 42. admin.py
     """
-    from .models import Job, Position, Leave, Profiles # add Profiles Model
-    admin.site.register(Profiles) #เพิ่มบรรทัด
+    from .models import Job, Position, Leave, Profile # add Profiles Model
+    admin.site.register(Profile) #เพิ่มบรรทัด
 
 43. views.py add code
     """
@@ -339,3 +339,37 @@ EP06
     """
 44. create register.html in myapp copy code from home.html
     edit div
+    """
+    {% extends 'myapp/base.html'%}
+    {% block title %} Register Form {% endblock title %}
+    {% block content %}
+    <div class="container mt-3">
+    <h2>Register Form</h2>
+    <form method = "POST">
+        {% csrf_token %}
+        <div class="mb-3 mt-3">
+        <label for="name">username</label>
+        <input type="text" class="form-control" id="name" placeholder="ชื่อ-นามสกุล" name="name">
+        </div>
+        <div class="mb-3 mt-3">
+        <label for="email">email</label>
+        <input type="email" class="form-control" id="email" placeholder="กรุณากรอก email" name="email">
+        </div>
+        <div class="mb-3 mt-3">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="กรุณากรอกรหัสผ่าน" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">บันทึก</button>
+    </form>
+    </div>
+    {% endblock content%}
+    """
+45. myapp\urls.py edit
+    """
+    from .views import Home, register
+    urlpatterns = [
+    path('', Home),
+    path('register/', register, name='register'),
+    ]
+    """
+46.
