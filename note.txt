@@ -621,3 +621,11 @@ EP06
     """
     .
     .
+    <!--ถ้ามี login user แล้ว ก็ให้มีปุ่ม สมัครสมาชิก -->
+    {% if not user.is_authenticated %}
+        <p class="text-center"><a href="{% url 'register' %}">สมัครสมาชิก</a></p>
+    {% endif %}
+    """
+EP.8
+
+55. 

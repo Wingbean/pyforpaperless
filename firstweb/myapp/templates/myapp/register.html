@@ -42,10 +42,9 @@
   </form>
   <!--ถ้ามี user แล้ว ก็ให้มีปุ่ม เข้าสู่ระบบ -->
   {% if not user.is_authenticated %}
-    <p><a href="{% url 'login' %}">เข้าสู่ระบบ</a></p>
+    <p class="text-center"><a href="{% url 'login' %}">เข้าสู่ระบบ</a></p>
   {% endif %}
 </div>
-
 
 {% endif %}
 {% endblock content %}
