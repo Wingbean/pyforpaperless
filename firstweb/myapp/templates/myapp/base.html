@@ -31,14 +31,50 @@
             font-size: 0.9rem;
             color: #adb5bd; /* สีข้อความรอง */
         }
+
+        .navbar {
+            width: 100%;
+            background-color: rgba(52, 58, 64, 0.9); /* สีพื้นหลัง navbar โทนเดียวกับ body แต่โปร่งแสงเล็กน้อย */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end; /* จัดปุ่มไปทางขวา */
+            position: fixed; /* ให้ navbar ติดอยู่ด้านบน */
+            top: 0;
+            left: 0;
+            z-index: 100; /* ให้ navbar อยู่เหนือเนื้อหาอื่น */
+        }
+
+        .navbar a {
+            color: #f8f9fa;
+            text-decoration: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border: 1px solid #f8f9fa; /* เพิ่มขอบเพื่อให้ดูเป็นปุ่ม */
+            border-radius: 5px;
+        }
+
+        .navbar a:hover {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
     </style>
 </head>
 <body>
-    <h1 class="main-title">Welcome to DataSlothy</h1>
-    {% block content %}
+    <nav class="navbar">
 
-    {% endblock content%}
-    
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a> <!--ถ้าเป็นจริงคือ login แล้ว ให้ขึ้น Logout -->
+        {% else %}
+        <a href="{% url 'login' %}">Login</a> <!--เป็นเงื่อนไขว่าถ้ายังไม่ได้ login ให้มาหน้า login -->
+        {% endif %}
+    </nav>
+
+    <div style="margin-top: 60px;"> <h1 class="main-title">Welcome to DataSlothy</h1>
+        {% block content %}
+
+        {% endblock content%}
+    </div>
+
     <footer class="powered-by">
         Power by DataSloth Team
     </footer>
