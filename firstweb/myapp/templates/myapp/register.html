@@ -1,0 +1,27 @@
+{% extends 'myapp/base.html'%}
+
+{% block title %} สมัครสมาชิก {% endblock title %}
+
+{% block content %}
+<div class="container mt-3">
+  <h2>สมัครสมาชิก</h2>
+  <form method = "POST">
+      {% csrf_token %}
+
+    <div class="mb-3 mt-3">
+      <label for="name">Username</label>
+      <input type="text" class="form-control" id="name" placeholder="ชื่อจริง" name="name">
+    </div>          
+    <div class="mb-3 mt-3">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="อีเมลล์" name="email">
+    </div>
+    <div class="mb-3 mt-3">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" placeholder="รหัสผ่าน" name="password">
+    </div>
+              
+    <button type="submit" class="btn btn-primary">บันทึก</button>
+  </form>
+</div>
+{% endblock content%}

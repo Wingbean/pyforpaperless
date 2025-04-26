@@ -288,7 +288,7 @@ EP06
     """
     from django.contrib.auth.models import User # นำเข้า User เข้ามาใช้
 
-    class Profiles(models.Model):
+    class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #เรียกใช้ user
     user_type = models.CharField(max_length=20, default= 'employee')
     bio = models.CharField(max_length=255)
@@ -296,7 +296,7 @@ EP06
     tel = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username #สังเกตการ return ไม่เหมือนอันอื่น
     """
 
 41. makemigration แล้ว migrate ด้วย เพราะเราสร้างฐานข้อมูล model ใหม่
@@ -309,56 +309,71 @@ EP06
 43. views.py add code
     """
     from django.shortcuts import render, redirect # add redirect
-    from .models import Job, Profiles
+    from django.http import HttpResponse # add line
+    from .models import Job, Profile # add line จาก models.py นำ class Job, class อื่น ๆ เข้ามา
     from django.contrib.auth.models import User # add line นำ User จาก authen เข้ามา
     .
     .
     def register(request):
-    context = {} # create a context dict to pass data to template
-    if request.method == 'POST':
-        data = request.POST.copy() # data เป็น Dict ที่มาจากการ submit form
+    context = {}
+    if request.method == 'POST' :
+        data = request.POST.copy() #copy ข้อมูลที่ส่งมาจากฟอร์ม , data เป็น Dict ที่มาจากการ submit form
+        
         print('DATA: ', data)
+
         name = data.get('name')
-        password = data.get('password')
         email = data.get('email')
+        password = data.get('password')
+
         print('Username: ', name)
         print('Password: ', password)
         print('Email: ', email)
-        check_user = User.objects.filter(username = email)
-        if not check_user.exists():
+
+        checK_user = User.objects.filter(username=email)
+
+        if not checK_user.exists():
             new_user = User(username=email, first_name=name)
             new_user.set_password(password)
             new_user.save()
-            profile = Profiles(user=new_user)
+
+            profile = Profile(user=new_user) #p เล็ก ตัวแปร P คือโมเดล
             profile.save()
-            context['success'] = True #เพื่อระบุว่าสำเร็จ
-            return redirect('login') # ให้ redirect กลับไปหน้า login
+
+            context['success'] = True # เพื่อระบุว่าการลงทะเบียนสำเร็จ
+
+            return redirect("home") # ให้ redirect กลับไปหน้า login
+        
         else:
-            context['user_taken'] = True #เพื่อแจ้งเตือนว่า email มีการสมัครเรียบร้อยแล้ว
+            context["user_taken"] = True #เพื่อแจ้งเตือนว่า email มีการสมัครเรียบร้อยแล้ว
+    
     return render(request, 'myapp/register.html', context)
     """
 44. create register.html in myapp copy code from home.html
     edit div
     """
     {% extends 'myapp/base.html'%}
-    {% block title %} Register Form {% endblock title %}
+
+    {% block title %} สมัครสมาชิก {% endblock title %}
+
     {% block content %}
     <div class="container mt-3">
-    <h2>Register Form</h2>
+    <h2>สมัครสมาชิก</h2>
     <form method = "POST">
         {% csrf_token %}
+
         <div class="mb-3 mt-3">
-        <label for="name">username</label>
-        <input type="text" class="form-control" id="name" placeholder="ชื่อ-นามสกุล" name="name">
-        </div>
+        <label for="name">Username</label>
+        <input type="text" class="form-control" id="name" placeholder="ชื่อจริง" name="name">
+        </div>          
         <div class="mb-3 mt-3">
-        <label for="email">email</label>
-        <input type="email" class="form-control" id="email" placeholder="กรุณากรอก email" name="email">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="อีเมลล์" name="email">
         </div>
         <div class="mb-3 mt-3">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="กรุณากรอกรหัสผ่าน" name="password">
+        <input type="password" class="form-control" id="password" placeholder="รหัสผ่าน" name="password">
         </div>
+                
         <button type="submit" class="btn btn-primary">บันทึก</button>
     </form>
     </div>
@@ -366,10 +381,13 @@ EP06
     """
 45. myapp\urls.py edit
     """
-    from .views import Home, register
+    from django.urls import path
+    from .views import Home, register # ใน folder เดียวกัน ช่วยหา views.py ให้หน่อย แล้ว import Fn Home() เข้ามา
+
+    # ข้างล่างเป็นตัวกำหนดทางเดินของเวบ
     urlpatterns = [
-    path('', Home),
-    path('register/', register, name='register'),
+        path('', Home, name='home'), #path('') มันก็คือ localhost:8000
+        path('register/', register, name='register'),
     ]
     """
-46.
+46. 
