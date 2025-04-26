@@ -628,4 +628,53 @@ EP06
     """
 EP.8
 
-55. 
+55. show date from model เริ่มจาก def ใน views.py ก่อน เตรียมข้อมูล --> edit urls.py
+    """
+    def table_job(request):
+    job = Job.objects.all()
+    context = {'job' :job}
+    return render(request, 'myapp/tablejob.html',context) #แนบ context เข้าไปเพื่อ for loop
+    """
+
+56. create tablejob.html
+    <!--copy from bootstrap-->
+    """
+    {% extends 'myapp/base.html'%}
+
+    {% block title %} ประวัติการสมัครงาน {% endblock title %}
+
+    {% block content %}
+    <div class="container mt-3">
+    <h2>ประวัติการสมัครงาน</h2>
+    <!--copy from bootstrap-->
+    <table class="table">
+        <thead>
+            <!--for loop จาก views job ที่สร้างไว้ job มันเป็น list-->
+        {for j in job}
+        <tr>
+            <th scope="col">{{forloop.counter}}</th>
+            <th scope="col">{{j.fullname}}</th>
+            <th scope="col">{{j.tel}}</th>
+            <th scope="col">{{j.position}}</th>
+        </tr>
+        { endfor }
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    {% endblock content%}
+    """
+
+57. urls.py edit
+    """
+    from .views import *
+    .
+    .
+    path('table-job/', table_job, name='table-job'),

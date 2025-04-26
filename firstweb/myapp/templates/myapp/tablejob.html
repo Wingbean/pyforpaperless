@@ -1,0 +1,23 @@
+{% extends 'myapp/base.html'%}
+
+{% block title %} ประวัติการสมัครงาน {% endblock title %}
+
+{% block content %}
+<div class="container mt-3">
+  <h2>ประวัติการสมัครงาน</h2>
+  <!--copy from bootstrap-->
+  <table class="table table-dark">
+    <thead>
+        <!--for loop จาก views job ที่สร้างไว้ job มันเป็น list-->
+      {% for j in job %}
+      <tr>
+        <th scope="col">{{forloop.counter}}</th>
+        <th scope="col">{{j.fullname}}</th>
+        <th scope="col">{{j.tel}}</th>
+        <th scope="col">{{j.position}}</th>
+      </tr>
+      {% endfor %}
+    </thead>
+  </table>
+</div>
+{% endblock content%}

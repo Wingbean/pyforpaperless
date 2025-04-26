@@ -81,3 +81,9 @@ def user_logout(request):
     logout(request)
     messages.success(request, 'ออกจากระบบสำเร็จ')
     return redirect('login') # ให้กลับไปหน้า login
+
+def table_job(request):
+    job = Job.objects.all()
+    context = {'job' :job}
+    return render(request, 'myapp/tablejob.html',context) #แนบ context เข้าไปเพื่อ for loop
+
