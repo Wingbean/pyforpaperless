@@ -678,3 +678,14 @@ EP.8
     .
     .
     path('table-job/', table_job, name='table-job'),
+
+58. base.html edit Nav bar
+    """
+    .
+    <a href="{% url 'table-job' %}">ประวัติการสมัคร</a>
+    .
+    """
+    {% if user.is_authenticated %} <!--user ต้อง login ก่อนถึงจะเห็นปุ่มนี้-->
+    <a href="{% url 'table-job' %}">ประวัติการสมัคร</a>
+    {% endif %}
+    """

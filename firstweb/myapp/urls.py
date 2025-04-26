@@ -8,5 +8,5 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
-    path('table-job/', table_job, name='table-job'),
+    path('table-job/', table_job, name='table-job'), #name คือสิ่งที่เราจะไปอ้างอิงทั้งเวบ
 ]
