@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect # add redirect
 from django.http import HttpResponse # add line
 from .models import Job, Profile # add line จาก models.py นำ class Job, class อื่น ๆ เข้ามา
 from django.contrib.auth.models import User # add line นำ User จาก authen เข้ามา
+from django.contrib.auth import authenticate, login , logout # เรียกใช้การ authen จาก auth
+from django.contrib import messages # เรียกใช้ message
 
 # start create fn for myapp\urls.py
 
@@ -58,3 +60,19 @@ def register(request):
             context["user_taken"] = True #เพื่อแจ้งเตือนว่า email มีการสมัครเรียบร้อยแล้ว
     
     return render(request, 'myapp/register.html', context)
+
+def login(request):
+    if request.method == 'POST':
+        data = request.POST.copy()
+        email = data.get('email')
+        password = data.get('password')
+
+        user = authenticate(request, username=email, password=password) #ตรวจสอบว่ามี user นี้ไหม
+        print(user, "User")
+        
+        if user is not None: # แปลว่ามี user จริง
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'email หรือ Password ไม่ถูกต้อง !!!')
+    return render(request, 'myapp/login.html')

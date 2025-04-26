@@ -390,4 +390,91 @@ EP06
         path('register/', register, name='register'),
     ]
     """
-46. 
+46. register.html edit
+    เหนือ form เพื่ิม
+    """
+    {% if success %}
+    <br><br>
+    <div class="alert alert-success" role="alert">
+    คุณได้สมัครสมาชิกเรียบร้อยแล้ว
+    </div>
+
+    {% else %}
+
+    {% if user_taken %}
+    <br><br>
+    <div class="alert alert-warning" role="alert">
+    email นี้ใช้งานแล้ว
+    </div>
+
+    {% endif %}
+    """
+    แล้วปิดด้วย
+    {% endif %}
+    ใต้ form
+    """
+47. view.py edit create def login # สร้างหน้า login
+    """
+    from django.contrib.auth import authenticate, login , logout # เรียกใช้การ authen จาก auth
+    .
+    .
+    .
+    def login(request):
+    if request.method == 'POST':
+        data = request.POST.copy()
+        email = data.get('email')
+        password = data.get('password')
+
+        user = authenticate(request, username=email, password=password) #ตรวจสอบว่ามี user นี้ไหม
+        print(user, "User")
+        
+        if user is not None: # แปลว่ามี user จริง
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'email หรือ Password ไม่ถูกต้อง !!!')
+    return render(request, 'myapp/login.html')
+    """
+
+48. login.html create in \templates\myapp
+    copy from register.html
+    """
+    {% extends 'myapp/base.html'%}
+
+    {% block title %} สมัครสมาชิก {% endblock title %}
+
+    {% block content %}
+
+    <div class="container mt-3">
+    <h2>เข้าสู่ระบบ</h2>
+    <form method = "POST">
+        {% csrf_token %}
+
+        {% if messages %}
+        <br><br>
+        <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+                <p>{{ messages }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="mb-3 mt-3">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="อีเมล์" name="email">
+        </div>
+
+        <div class="mb-3 mt-3">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="รหัสผ่าน" name="password">
+        </div>
+                
+        <button type="submit" class="btn btn-primary">บันทึก</button>
+    </form>
+    </div>
+
+    {% endblock content %}
+
+    """
+
+49. myapp\urls.py

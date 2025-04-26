@@ -4,35 +4,25 @@
 
 {% block content %}
 
-{% if success %}
-<br><br>
-<div class="alert alert-success" role="alert">
-  คุณได้สมัครสมาชิกเรียบร้อยแล้ว
-</div>
-
-{% else %}
-
-{% if user_taken %}
-<br><br>
-<div class="alert alert-warning" role="alert">
-  email นี้ใช้งานแล้ว
-</div>
-
-{% endif %}
-
 <div class="container mt-3">
-  <h2>สมัครสมาชิก</h2>
+  <h2>เข้าสู่ระบบ</h2>
   <form method = "POST">
       {% csrf_token %}
 
-    <div class="mb-3 mt-3">
-      <label for="name">Username</label>
-      <input type="text" class="form-control" id="name" placeholder="ชื่อจริง" name="name">
-    </div>          
+      {% if messages %}
+      <br><br>
+      <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+            <p>{{ messages }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      
     <div class="mb-3 mt-3">
       <label for="email">Email</label>
       <input type="email" class="form-control" id="email" placeholder="อีเมล์" name="email">
     </div>
+
     <div class="mb-3 mt-3">
       <label for="password">Password</label>
       <input type="password" class="form-control" id="password" placeholder="รหัสผ่าน" name="password">
@@ -41,5 +31,5 @@
     <button type="submit" class="btn btn-primary">บันทึก</button>
   </form>
 </div>
-{% endif %}
+
 {% endblock content %}
