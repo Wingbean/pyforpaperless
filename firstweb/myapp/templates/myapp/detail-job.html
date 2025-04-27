@@ -1,0 +1,15 @@
+{% extends 'myapp/base.html'%}
+
+{% block title %} ประวัติการสมัครงาน {% endblock title %}
+
+{% block content %}
+<div class="container mt-3">
+  <h2>ประวัติการสมัครงาน</h2>
+  <hr>
+  <h1>ID : {{job.id}}</h1>
+  <h1>ชื่อ-สกุล : {{job.fullname}}</h1>
+  <h1>เบอร์โทร : {{job.tel}}</h1>
+  <h1>ตำแหน่ง : {{job.position}}</h1>
+
+</div>
+{% endblock content%}

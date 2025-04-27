@@ -9,4 +9,5 @@ urlpatterns = [
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
     path('table-job/', table_job, name='table-job'), #name คือสิ่งที่เราจะไปอ้างอิงทั้งเวบ
+    path('detail-job/<int:id>/', detail_job, name='detail-job'), 
 ]

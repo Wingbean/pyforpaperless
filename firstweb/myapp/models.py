@@ -11,6 +11,13 @@ class Job(models.Model):
     def __str__(self):
         return self.fullname
 
+class Job_detail(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE) # เมื่อ user ที่ Job โดนลบ job_detail ของ user นั้นก็จะโดนลบไปด้วย
+    description = models.TextField(null=True, blank=True)
+    yesno = models.CharField(max_length=255, null=True, blank=True, default='no')
+    def __str__(self):
+        return self.job.fullname
+
 class Position(models.Model):
     title = models.CharField(max_length=255)
     salary = models.IntegerField(default=10000) # ค่าเริ่มต้น 10000

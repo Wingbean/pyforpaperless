@@ -647,29 +647,30 @@ EP.8
     <div class="container mt-3">
     <h2>ประวัติการสมัครงาน</h2>
     <!--copy from bootstrap-->
-    <table class="table">
+    <table class="table table-dark">
         <thead>
-            <!--for loop จาก views job ที่สร้างไว้ job มันเป็น list-->
-        {for j in job}
         <tr>
-            <th scope="col">{{forloop.counter}}</th>
-            <th scope="col">{{j.fullname}}</th>
-            <th scope="col">{{j.tel}}</th>
-            <th scope="col">{{j.position}}</th>
+            <th scope="col">id</th>
+            <th scope="col">ชื่อ-สกุล</th>
+            <th scope="col">เบอร์โทร</th>
+            <th scope="col">ตำแหน่ง</th>
         </tr>
-        { endfor }
         </thead>
         <tbody>
+        <!--for loop จาก views job ที่สร้างไว้ job มันเป็น list-->
+        {% for j in job %}
         <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{j.fullname}}</td>
+            <td>{{j.tel}}</td>
+            <td>{{j.position}}</td>
         </tr>
-        </tbody>
+        {% endfor %}
+        </tbody>    
     </table>
     </div>
     {% endblock content%}
+    
     """
 
 57. urls.py edit
@@ -688,4 +689,87 @@ EP.8
     {% if user.is_authenticated %} <!--user ต้อง login ก่อนถึงจะเห็นปุ่มนี้-->
     <a href="{% url 'table-job' %}">ประวัติการสมัคร</a>
     {% endif %}
+    """
+
+59. ทำให้เฉพาะ user type admin เห็น ข้อมูลการสมัคร
+    base.html edit
+    """
+    <!--ต้อง login และ user อ้างอิงจาก model profile ว่า user type ต้องเป็น admin มันเป็นการสร้าง filter การมองเห็นข้อมูล-->
+    {% if user.is_authenticated and user.profile.usertype == 'admin' %} <!--user admin ต้อง login ก่อนถึงจะเห็นปุ่มนี้-->
+        <a href="{% url 'table-job' %}">ประวัติการสมัคร</a>
+        {% endif %}
+    """
+
+60. filte nav bar ไม่พอ เราต้อง login required ที่ url ด้วย
+    view.py edit
+    """
+    from django.contrib.auth.decorators import login_required
+    .
+    .
+    @login_required # เพิ่มเข้ามาเพื่อให้ต้อง login ก่อน ถึงจะโชว์ model นี้
+    def table_job(request):
+    # if ไม่ให้เข้า จนกว่า user type จะเป็น admin
+    if request.user.profile.user_type != 'admin':
+        return redirect('home')
+    job = Job.objects.all()
+    context = {'job' :job}
+    return render(request, 'myapp/tablejob.html',context) #แนบ context เข้าไปเพื่อ for loop
+
+61. ทำลิ้งค์ที่ชื่อ คนที่เราแสดงใน table-job เพื่อกด ไปดูรายละเอียด แล้ว ใส่ form เข้าไป อันนึง แบบ radiobutton 
+    เพื่อให้มีการ Link กัน ระหว่าง 2 model โดยใช้ FK Foreign key
+    *จะทำอะไร เริ่มจาก view ก่อนเลย
+    views.py edit
+    """
+    # filter job ฒา id เดียว เลย
+    def detail_job(request, id):
+        job = Job.objects.get(id=id) # เราจะได้ jon ที่เป็น Id นั้นออกมา
+        context = {'job' : job} # เก็บเป็น context ส่งไปหน้า html
+        return render(request, 'myapp/detail-job.html', context)
+    """
+    
+    create detail-job.html
+    copy from tablejob.html เอาใต้ <h2> ออกหมด
+    """
+    <div class="container mt-3">
+        <h2>ประวัติการสมัครงาน</h2>
+        <hr>
+        <h1>ID : {{job.id}}</h1>
+        <h1>ชื่อ-สกุล : {{job.fullname}}</h1>
+        <h1>เบอร์โทร : {{job.tel}}</h1>
+        <h1>ตำแหน่ง : {{job.position}}</h1>
+
+    </div>
+    """
+
+    urls.py edit
+    """
+    path('detail-job/<int:id>/', detail_job, name='detail-job'), 
+
+62. tablejob.html edit
+    """
+    <!--จะกลายเป็น link ที่ ref ไปหา url detail-job.html ของ id นั้น-->
+    <td><a href="{% url 'detail-job' j.id %}">{{j.fullname}}</a></td>
+    """
+
+63. model.py 
+    add Job_detail model
+    """
+    class Job_detail(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE) # เมื่อ user ที่ Job โดนลบ job_detail ของ user นั้นก็จะโดนลบไปด้วย
+    description = models.TextField(null=True, blank=True)
+    yesno = models.CharField(max_length=255, null=True, blank=True, default='no')
+    def __str__(self):
+        return self.job.fullname
+    """
+64. makemigration + migrate เพื่อ สร้างโมเดลใหม่
+
+65. admin.py edit
+    add เข้าหลังบ้าน django
+    """
+    from .models import Job_detail
+    admin.site.register(Job_detail)
+    """
+
+detail_job.html edit
+    add form radio button
     """

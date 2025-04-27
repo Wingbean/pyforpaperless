@@ -8,16 +8,25 @@
   <!--copy from bootstrap-->
   <table class="table table-dark">
     <thead>
-        <!--for loop จาก views job ที่สร้างไว้ job มันเป็น list-->
-      {% for j in job %}
       <tr>
-        <th scope="col">{{forloop.counter}}</th>
-        <th scope="col">{{j.fullname}}</th>
-        <th scope="col">{{j.tel}}</th>
-        <th scope="col">{{j.position}}</th>
+        <th scope="col">id</th>
+        <th scope="col">ชื่อ-สกุล</th>
+        <th scope="col">เบอร์โทร</th>
+        <th scope="col">ตำแหน่ง</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!--for loop จาก views job ที่สร้างไว้ job มันเป็น list-->
+    {% for j in job %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <!--จะกลายเป็น link ที่ ref ไปหา url detail-job.html ของ id นั้น-->
+        <td><a href="{% url 'detail-job' j.id %}">{{j.fullname}}</a></td>
+        <td>{{j.tel}}</td>
+        <td>{{j.position}}</td>
       </tr>
       {% endfor %}
-    </thead>
+    </tbody>    
   </table>
 </div>
 {% endblock content%}

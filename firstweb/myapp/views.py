@@ -4,6 +4,7 @@ from .models import Job, Profile # add line จาก models.py นำ class Job
 from django.contrib.auth.models import User # add line นำ User จาก authen เข้ามา
 from django.contrib.auth import authenticate, login , logout # เรียกใช้การ authen จาก auth
 from django.contrib import messages # เรียกใช้ message
+from django.contrib.auth.decorators import login_required # use login required in model
 
 # start create fn for myapp\urls.py
 
@@ -82,8 +83,17 @@ def user_logout(request):
     messages.success(request, 'ออกจากระบบสำเร็จ')
     return redirect('login') # ให้กลับไปหน้า login
 
+@login_required # เพิ่มเข้ามาเพื่อให้ต้อง login ก่อน ถึงจะโชว์ model นี้
 def table_job(request):
+    # if ไม่ให้เข้า จนกว่า user type จะเป็น admin
+    if request.user.profile.user_type != 'admin':
+        return redirect('home')
     job = Job.objects.all()
     context = {'job' :job}
     return render(request, 'myapp/tablejob.html',context) #แนบ context เข้าไปเพื่อ for loop
 
+# filter job ฒา id เดียว เลย
+def detail_job(request, id):
+    job = Job.objects.get(id=id) # เราจะได้ jon ที่เป็น Id นั้นออกมา
+    context = {'job' : job} # เก็บเป็น context ส่งไปหน้า html
+    return render(request, 'myapp/detail-job.html', context)
