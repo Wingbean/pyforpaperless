@@ -13,7 +13,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* เอา justify-content: center ออกจาก body เพื่อให้ navbar อยู่ด้านบน */
+            justify-content: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
@@ -37,26 +37,14 @@
             background-color: rgba(52, 58, 64, 0.9); /* สีพื้นหลัง navbar โทนเดียวกับ body แต่โปร่งแสงเล็กน้อย */
             padding: 10px 20px;
             display: flex;
-            justify-content: space-between; /* กระจายพื้นที่ระหว่าง element ใน navbar */
-            align-items: center; /* จัดให้ element อยู่ตรงกลางแนวตั้ง */
+            justify-content: flex-end; /* จัดปุ่มไปทางขวา */
             position: fixed; /* ให้ navbar ติดอยู่ด้านบน */
             top: 0;
             left: 0;
             z-index: 100; /* ให้ navbar อยู่เหนือเนื้อหาอื่น */
         }
 
-        .navbar-brand {
-            font-size: 1.5rem;
-            color: #f8f9fa;
-            text-decoration: none;            
-        }
-
-        .navbar-links {
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar-links a {
+        .navbar a {
             color: #f8f9fa;
             text-decoration: none;
             padding: 8px 15px;
@@ -65,41 +53,32 @@
             border-radius: 5px;
         }
 
-        .navbar-links a:hover {
+        .navbar a:hover {
             background-color: #f8f9fa;
             color: #343a40;
-        }
-
-        /* ปรับ margin-top ของ div ที่ห่อหุ้มเนื้อหาหลัก */
-        .content-wrapper {
-            margin-top: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1; /* ให้ขยายเพื่อเติมพื้นที่ที่เหลือ */
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <a class="navbar-brand" href="{% url 'home' %}">Welcome to DataSlothy</a>
-        
-        <div class="navbar-links">
-            {% if user.is_authenticated and user.profile.user_type == 'admin' %}
-            <a href="{% url 'table-job' %}">ประวัติการสมัคร</a>
-            {% endif %}
 
-            {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}">Logout</a>
-            {% else %}
-            <a href="{% url 'login' %}">Login</a>
-            {% endif %}
-        </div>
+        <a href="{% url 'home' %}">Home</a>
+        
+        <!--ต้อง login และ user อ้างอิงจาก model profile ว่า user type ต้องเป็น admin มันเป็นการสร้าง filter การมองเห็นข้อมูล-->
+        {% if user.is_authenticated and user.profile.user_type == 'admin' %} <!--user admin ต้อง login ก่อนถึงจะเห็นปุ่มนี้-->
+        <a href="{% url 'table-job' %}">ประวัติการสมัคร</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a> <!--ถ้าเป็นจริงคือ login แล้ว ให้ขึ้น Logout -->
+        {% else %}
+
+        <a href="{% url 'login' %}">Login</a> <!--เป็นเงื่อนไขว่าถ้ายังไม่ได้ login ให้มาหน้า login -->
+        {% endif %}
+
     </nav>
 
-    <div class="content-wrapper">
-        <h1 class="main-title">DataSlothy world</h1>
+    <div style="margin-top: 60px;"> <h1 class="main-title">DataSlothy world</h1>
         {% block content %}
 
         {% endblock content%}
