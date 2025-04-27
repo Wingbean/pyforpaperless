@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect # add redirect
 from django.http import HttpResponse # add line
-from .models import Job, Profile # add line จาก models.py นำ class Job, class อื่น ๆ เข้ามา
+from .models import Job, Profile, Job_detail # add line จาก models.py นำ class Job, class อื่น ๆ เข้ามา
 from django.contrib.auth.models import User # add line นำ User จาก authen เข้ามา
 from django.contrib.auth import authenticate, login , logout # เรียกใช้การ authen จาก auth
 from django.contrib import messages # เรียกใช้ message
@@ -24,6 +24,12 @@ def Home(request):
         newjob.tel = tel
         newjob.position = position
         newjob.save() #ใช้ method save() ที่ inherit มาจาก "from django.db import models"
+
+        # add to Job_detail
+        newdetail = Job_detail()
+        newdetail.job = newjob
+        newdetail.description = '-'
+        newdetail.save()
 
     #return HttpResponse('<h1>Hello World from DataSloth</h1>')
     return render(request, 'myapp/home.html')
@@ -94,6 +100,20 @@ def table_job(request):
 
 # filter job ฒา id เดียว เลย
 def detail_job(request, id):
-    job = Job.objects.get(id=id) # เราจะได้ jon ที่เป็น Id นั้นออกมา
-    context = {'job' : job} # เก็บเป็น context ส่งไปหน้า html
+        
+    job = Job.objects.get(id=id) # เราจะได้ job ที่เป็น Id นั้นออกมา
+    # เพิ่มการรับข้อมูล จากการ กด submit ในหน้า detail-job
+    if request.method == 'POST':
+        data = request.POST.copy()
+        description = data.get('description')
+        yesno = data.get('yesno')
+        print('description: ', description)
+        print('yesno: ', yesno)
+        detailjob = Job_detail.objects.get(job=job)
+        detailjob.description = description
+        detailjob.yesno = yesno
+        detailjob.save()
+
+    detailjob = Job_detail.objects.get(job=job)
+    context = {'job' : job, 'detailjob' : detailjob} # เก็บเป็น context ส่งไปหน้า html
     return render(request, 'myapp/detail-job.html', context)

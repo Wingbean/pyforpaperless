@@ -769,7 +769,119 @@ EP.8
     from .models import Job_detail
     admin.site.register(Job_detail)
     """
+    ***ทุกครั้งที่มีการสร้าง Job ขึ้นมา Job detail ต้องบังคับถูกสร้างตามมาด้วย ไม่งั้น error***
+    ***เราต้องแก้ที่หน้า Home ด้วย เพื่อให้ ทุกครั้งที่มีการสร้าง Job ให้สร้าง Job detail ด้วย***
 
-detail_job.html edit
-    add form radio button
+66. views.py edit # มี FK ควร add เข้าไปใน Fn เดิม ใน views
+    ในที่นี้ คือ Home()
     """
+    from .models import Job, Profile, Job_detail
+    .
+    def Home
+    .
+    .
+    # add to Job_detail
+        newdetail = Job_detail()
+        newdetail.job = newjob
+        newdetail.description = '-'
+        newdetail.save()
+    """
+
+67. detail-job.html edit
+    add form radio button
+    copy form from register.html
+    """
+    <div class="container mt-3">
+    <form method = "POST">
+        {% csrf_token %}
+
+        <div class="mb-3 mt-3">
+        <label for="description">รายละเอียดการสัมภาษณ์</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+        </div>
+
+        <!--การทำ radio button name ถ้าเป็นข้อเดียวกันต้องเหมือนกัน แต่ id กับ for จะต่างกัน เพื่อใช้ ref-->
+        <div class="mb-3 mt-3">
+        <input class="form-check-input" type="radio" name="yesno" id="yesno1" value="ผ่าน">
+        <label class="form-check-label" for="yesno1">ผ่าน</label>
+        </div>
+
+        <div class="mb-3 mt-3">
+        <input class="form-check-input" type="radio" name="yesno" id="yesno2" value="ไม่ผ่าน" checked>
+        <label class="form-check-label" for="yesno2">ไม่ผ่าน</label>
+        </div>
+                
+        <button type="submit" class="btn btn-primary">บันทึกผลการสัมภาษณ์</button>
+    </form>
+    </div>
+    """
+
+68. views.py edit
+    """
+    def detail_job(request, id):
+        
+    job = Job.objects.get(id=id) # เราจะได้ job ที่เป็น Id นั้นออกมา
+    # เพิ่มการรับข้อมูล จากการ กด submit ในหน้า detail-job
+    if request.method == 'POST':
+        data = request.POST.copy()
+        description = data.get('description')
+        yesno = data.get('yesno')
+        print('description: ', description)
+        print('yesno: ', yesno)
+        detailjob = Job_detail.objects.get(job=job)
+        detailjob.description = description
+        detailjob.yesno = yesno
+        detailjob.save()
+
+    detailjob = Job_detail.objects.get(job=job)
+    context = {'job' : job, 'detailjob' : detailjob} # เก็บเป็น context ส่งไปหน้า html
+    return render(request, 'myapp/detail-job.html', context)
+
+    """
+
+69. detail-job.html edit
+    """
+    <div class="container mt-3">
+    <form method = "POST">
+        {% csrf_token %}
+
+        <div class="mb-3 mt-3">
+        <label for="description">รายละเอียดการสัมภาษณ์</label>
+        <textarea class="form-control" id="description" name="description" rows="3">{{detailjob.description}}</textarea>
+        </div>
+
+        <!--ถ้าไม่ผ่าน ให้ submit-->
+        {% if detailjob.yesno == 'ไม่ผ่าน' or detailjob.yesno == 'no' %}
+        <!--การทำ radio button name ถ้าเป็นข้อเดียวกันต้องเหมือนกัน แต่ id กับ for จะต่างกัน เพื่อใช้ ref-->
+        <div class="mb-3 mt-3">
+            <input class="form-check-input" type="radio" name="yesno" id="yesno1" value="ผ่าน">
+            <label class="form-check-label" for="yesno1">ผ่าน</label>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <input class="form-check-input" type="radio" name="yesno" id="yesno2" value="ไม่ผ่าน" checked>
+            <label class="form-check-label" for="yesno2">ไม่ผ่าน</label>
+        </div>
+        
+        <!--ถ้าไม่ผ่าน ให้ submit-->
+        {%else%}
+        <!--การทำ radio button name ถ้าเป็นข้อเดียวกันต้องเหมือนกัน แต่ id กับ for จะต่างกัน เพื่อใช้ ref-->
+        <div class="mb-3 mt-3">
+            <input class="form-check-input" type="radio" name="yesno" id="yesno1" value="ผ่าน" checked>
+            <label class="form-check-label" for="yesno1">ผ่าน</label>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <input class="form-check-input" type="radio" name="yesno" id="yesno2" value="ไม่ผ่าน">
+            <label class="form-check-label" for="yesno2">ไม่ผ่าน</label>
+        </div>
+        {%endif%}
+        .
+        .
+    """
+
+70.
+
+
+
+    

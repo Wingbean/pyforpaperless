@@ -12,4 +12,45 @@
   <h1>ตำแหน่ง : {{job.position}}</h1>
 
 </div>
+
+<div class="container mt-3">
+  <form method = "POST">
+      {% csrf_token %}
+
+    <div class="mb-3 mt-3">
+      <label for="description">รายละเอียดการสัมภาษณ์</label>
+      <textarea class="form-control" id="description" name="description" rows="3">{{detailjob.description}}</textarea>
+    </div>
+
+    <!--ถ้าไม่ผ่าน ให้ submit-->
+    {% if detailjob.yesno == 'ไม่ผ่าน' or detailjob.yesno == 'no' %}
+
+      <!--การทำ radio button name ถ้าเป็นข้อเดียวกันต้องเหมือนกัน แต่ id กับ for จะต่างกัน เพื่อใช้ ref-->
+      <div class="mb-3 mt-3">
+        <input class="form-check-input" type="radio" name="yesno" id="yesno1" value="ผ่าน">
+        <label class="form-check-label" for="yesno1">ผ่าน</label>
+      </div>
+
+      <div class="mb-3 mt-3">
+        <input class="form-check-input" type="radio" name="yesno" id="yesno2" value="ไม่ผ่าน" checked>
+        <label class="form-check-label" for="yesno2">ไม่ผ่าน</label>
+      </div>
+    
+    <!--ถ้าไม่ผ่าน ให้ submit-->
+    {%else%}
+      <!--การทำ radio button name ถ้าเป็นข้อเดียวกันต้องเหมือนกัน แต่ id กับ for จะต่างกัน เพื่อใช้ ref-->
+      <div class="mb-3 mt-3">
+        <input class="form-check-input" type="radio" name="yesno" id="yesno1" value="ผ่าน" checked>
+        <label class="form-check-label" for="yesno1">ผ่าน</label>
+      </div>
+
+      <div class="mb-3 mt-3">
+        <input class="form-check-input" type="radio" name="yesno" id="yesno2" value="ไม่ผ่าน">
+        <label class="form-check-label" for="yesno2">ไม่ผ่าน</label>
+      </div>
+    {%endif%}
+              
+    <button type="submit" class="btn btn-primary">บันทึกผลการสัมภาษณ์</button>
+  </form>
+</div>
 {% endblock content%}
