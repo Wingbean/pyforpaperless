@@ -131,3 +131,8 @@ def edit_job(request, id):
         job.tel = tel
         job.position = position
         job.save()
+
+        return redirect('table-job')
+
+    context = {'job' : job} # เก็บเป็น context ส่งไปหน้า html
+    return render(request, 'myapp/edit-job.html', context) #

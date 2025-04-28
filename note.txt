@@ -887,10 +887,134 @@ views.py edit สร้าง fn การแก้ไข job
     from django.shortcuts import render, redirect, get_object_or_404
     .
     .
-    
+    # สร้างการ แก้ไข job
+    def edit_job(request, id):
+        job = get_object_or_404(Job, id=id)
+        if request.method == 'POST':
+            data = request.POST.copy()
+            fullname = data.get('fullname')
+            tel = data.get('tel')
+            position = data.get('position')
+            
+            job.fullname = fullname
+            job.tel = tel
+            job.position = position
+            job.save()
+
+            return redirect('table-job')
+
+        context = {'job' : job} # เก็บเป็น context ส่งไปหน้า html
+        return render(request, 'myapp/edit-job.html', context) #
     """
 
+71. urls.py edit
+    """
+    .
+    path('edit-job/<int:id>/', edit_job, name='edit-job'),
+    """
 
+72. create edit-job.html
+    copy from login
+    """
+    {% extends 'myapp/base.html'%}
 
+    {% block title %} แก้ไขข้อมูล {% endblock title %}
 
+    {% block content %}
+
+    <div class="container mt-3">
+        <h2>ประวัติการสมัครงาน</h2>
+        <table class="table table-dark">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">ชื่อ-สกุล</th>
+            <th scope="col">เบอร์โทร</th>
+            <th scope="col">แก้ไข</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#editModal"
+                data-id=""
+                data-fullname=""
+                data-tel=""
+                data-position="">
+                แก้ไข
+                </button>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
     
+    
+    
+    
+    <div class="modal fade text-left " id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content bg-dark text-light">
+            <form id="editJobForm" method="post">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">แก้ไขข้อมูล</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                <label for="" class="form-label">ชื่อ-สกุล</label>
+                <input type="text" class="form-control" id="" name="">
+                </div>
+                <div class="mb-3">
+                <label for="" class="form-label">เบอร์โทร</label>
+                <input type="text" class="form-control" id="" name="">
+                </div>
+                <div class="mb-3">
+                <label for="" class="form-label">ตำแหน่ง</label>
+                <input type="text" class="form-control" id="" name="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary">บันทึก</button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <!--พิมพ์เอง script modal-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const editModal = document.getElementById('editModal');
+
+            editModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relateTarget; //ปุ่มเรียกใช้งาน modal
+                const jobId = button.getAttribute('data-id');
+                const fullname = button.getAttribute('data-fullname');
+                const tel = button.getAttribute('data-tel');
+                const position = button.getAttribute('data-position');
+
+                // เติมข้อมูลลง modal
+                document.getElementById('fullname').value = fullname;
+                document.getElementById('tel').value = tel;
+                document.getElementById('position').value = position;
+
+                // อัปเดทการดำเนินการแบบฟอร์มเพื่อรวม ID
+                const form = document.getElementById('editJobForm');
+                form.action = `/edit-job/${jobId}/`;
+            });
+        });
+    </script>
+
+    {% endblock content %}
+    """
+
+73. 
