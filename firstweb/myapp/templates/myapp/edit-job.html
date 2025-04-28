@@ -81,7 +81,7 @@
         const editModal = document.getElementById('editModal');
 
         editModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relateTarget; //ปุ่มเรียกใช้งาน modal
+            const button = event.relatedTarget; //ปุ่มเรียกใช้งาน modal
             const jobId = button.getAttribute('data-id');
             const fullname = button.getAttribute('data-fullname');
             const tel = button.getAttribute('data-tel');
