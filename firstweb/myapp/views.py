@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect # add redirect
+from django.shortcuts import render, redirect, get_object_or_404 # add redirect
 from django.http import HttpResponse # add line
 from .models import Job, Profile, Job_detail # add line จาก models.py นำ class Job, class อื่น ๆ เข้ามา
 from django.contrib.auth.models import User # add line นำ User จาก authen เข้ามา
@@ -117,3 +117,17 @@ def detail_job(request, id):
     detailjob = Job_detail.objects.get(job=job)
     context = {'job' : job, 'detailjob' : detailjob} # เก็บเป็น context ส่งไปหน้า html
     return render(request, 'myapp/detail-job.html', context)
+
+# สร้างการ แก้ไข job
+def edit_job(request, id):
+    job = get_object_or_404(Job, id=id)
+    if request.method == 'POST':
+        data = request.POST.copy()
+        fullname = data.get('fullname')
+        tel = data.get('tel')
+        position = data.get('position')
+        
+        job.fullname = fullname
+        job.tel = tel
+        job.position = position
+        job.save()

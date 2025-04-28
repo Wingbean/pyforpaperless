@@ -881,7 +881,15 @@ EP.8
     """
 EP9
 
-70.
+70. add ปุ่ม แก้ไข ลบ หลังชื่อ ในตาราง table-job
+views.py edit สร้าง fn การแก้ไข job
+    """
+    from django.shortcuts import render, redirect, get_object_or_404
+    .
+    .
+    
+    """
+
 
 
 
