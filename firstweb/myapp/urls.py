@@ -11,4 +11,5 @@ urlpatterns = [
     path('table-job/', table_job, name='table-job'), #name คือสิ่งที่เราจะไปอ้างอิงทั้งเวบ
     path('detail-job/<int:id>/', detail_job, name='detail-job'),
     path('edit-job/<int:id>/', edit_job, name='edit-job'),
+    path('delete-job/<int:id>/', delete_job, name='delete-job'),
 ]

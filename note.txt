@@ -901,7 +901,7 @@ views.py edit สร้าง fn การแก้ไข job
             job.position = position
             job.save()
 
-            return redirect('table-job')
+            return redirect('table-job') # ตรงนี้จะทำให้หลังกดแก้ไขใน modal จะกลับมาที่หน้า table-job
 
         context = {'job' : job} # เก็บเป็น context ส่งไปหน้า html
         return render(request, 'myapp/edit-job.html', context) #
@@ -930,23 +930,26 @@ views.py edit สร้าง fn การแก้ไข job
             <th scope="col">#</th>
             <th scope="col">ชื่อ-สกุล</th>
             <th scope="col">เบอร์โทร</th>
+            <th scope="col">ตำแหน่ง</th>
             <th scope="col">แก้ไข</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+                <td>{{ job.id }}</td>
+            <td>{{ job.fullname }}</td>
+            <td>{{ job.tel }}</td>
+            <td>{{ job.position }}</td>
             <td>
+                <!--ให้ button รับค่า มาแสดง ใน modal-->
                 <button
                 class="btn btn-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#editModal"
-                data-id=""
-                data-fullname=""
-                data-tel=""
-                data-position="">
+                data-id="{{ job.id }}"
+                data-fullname="{{ job.fullname }}"
+                data-tel="{{ job.tel }}"
+                data-position="{{ job.position }}">
                 แก้ไข
                 </button>
             </td>
@@ -969,16 +972,16 @@ views.py edit สร้าง fn การแก้ไข job
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                <label for="" class="form-label">ชื่อ-สกุล</label>
-                <input type="text" class="form-control" id="" name="">
+                <label for="fullname" class="form-label">ชื่อ-สกุล</label>
+                <input type="text" class="form-control" id="fullname" name="fullname">
                 </div>
                 <div class="mb-3">
-                <label for="" class="form-label">เบอร์โทร</label>
-                <input type="text" class="form-control" id="" name="">
+                <label for="tel" class="form-label">เบอร์โทร</label>
+                <input type="text" class="form-control" id="tel" name="tel">
                 </div>
                 <div class="mb-3">
-                <label for="" class="form-label">ตำแหน่ง</label>
-                <input type="text" class="form-control" id="" name="">
+                <label for="position" class="form-label">ตำแหน่ง</label>
+                <input type="text" class="form-control" id="position" name="position">
                 </div>
             </div>
             <div class="modal-footer">
@@ -996,7 +999,7 @@ views.py edit สร้าง fn การแก้ไข job
             const editModal = document.getElementById('editModal');
 
             editModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relateTarget; //ปุ่มเรียกใช้งาน modal
+                const button = event.relatedTarget; //ปุ่มเรียกใช้งาน modal
                 const jobId = button.getAttribute('data-id');
                 const fullname = button.getAttribute('data-fullname');
                 const tel = button.getAttribute('data-tel');
@@ -1017,4 +1020,71 @@ views.py edit สร้าง fn การแก้ไข job
     {% endblock content %}
     """
 
-73. 
+73. tablejob.html edit
+    เพิ่มปุ่มแก้ไข
+    """
+    <th scope="col">แก้ไข</th>
+    .
+    <!--เพิ่มปุ่มแก้ไข-->
+        <td><a href = "{% url 'edit-job' j.id %}" class = "btn btn-primary">แก้ไข</a></td>
+    """
+
+สร้าง fn delete
+74. views.py edit
+    สร้าง fn delete
+    """
+    def delete_job(request, id):
+    job = get_object_or_404(Job, id=id)
+    if request.method == 'POST':
+        job.delete()
+
+        return redirect('table-job')
+    
+    context = {'job' : job}
+    return render(request, 'myapp/delete-job.html', context)
+    """
+
+75. urls.py edit
+    """
+    path('delete-job/<int:id>/', delete_job, name='delete-job'),
+    """
+
+76. create delete-job.html
+    """
+    {% extends 'myapp/base.html'%}
+
+    {% block title %} ลบข้อมูลการสมัครงาน {% endblock title %}
+
+    {% block content %}
+
+    <div class="container mt-5">
+        <h2>ยืนยันการลบ</h2>
+        <p>คุณต้องการลบข้อมูลของ {{ job.fullname}} ๖ำแหน่ง {{ job.position }} ใช่หรือไม่?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">ลบ</button>
+            <a href="{% url 'table-job' %}" class="btn btn-secondary">ยกเลิก</a>
+        </form>
+    </div>
+
+    {% endblock content%}
+    """
+
+77. tablejob.html edit
+    เพิ่มปุ่มลบ
+    """
+    <th scope="col">ลบ</th>
+    .
+    <!--เพิ่มปุ่มลบ-->
+        <td><a href = "{% url 'delete-job' j.id %}" class = "btn btn-danger">ลบ</a></td>
+    """
+
+78. edit-job.html edit
+    add back button
+    """
+    <a href ="{% url 'table-job' %}" class="btn btn-primary">Back</a>
+    """
+
+EP.10
+
+79. 

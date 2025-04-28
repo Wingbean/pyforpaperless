@@ -13,6 +13,8 @@
         <th scope="col">ชื่อ-สกุล</th>
         <th scope="col">เบอร์โทร</th>
         <th scope="col">ตำแหน่ง</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Del</th>
       </tr>
     </thead>
     <tbody>
@@ -24,6 +26,10 @@
         <td><a href="{% url 'detail-job' j.id %}">{{j.fullname}}</a></td>
         <td>{{j.tel}}</td>
         <td>{{j.position}}</td>
+        <!--เพิ่มปุ่มแก้ไข-->
+        <td><a href = "{% url 'edit-job' j.id %}" class = "btn btn-primary">แก้ไข</a></td>
+        <!--เพิ่มปุ่มลบ-->
+        <td><a href = "{% url 'delete-job' j.id %}" class = "btn btn-danger">ลบ</a></td>
       </tr>
       {% endfor %}
     </tbody>    

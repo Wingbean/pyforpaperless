@@ -136,3 +136,13 @@ def edit_job(request, id):
 
     context = {'job' : job} # เก็บเป็น context ส่งไปหน้า html
     return render(request, 'myapp/edit-job.html', context) #
+
+def delete_job(request, id):
+    job = get_object_or_404(Job, id=id)
+    if request.method == 'POST':
+        job.delete()
+
+        return redirect('table-job')
+    
+    context = {'job' : job}
+    return render(request, 'myapp/delete-job.html', context)
